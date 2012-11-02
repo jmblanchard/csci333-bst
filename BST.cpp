@@ -1,4 +1,5 @@
 #include "BST.h"
+#include <queue>
 #include <iostream>
 #include <assert.h>
 
@@ -133,7 +134,39 @@ void BST<T>::remove(T v) {
 
 template <typename T>
 void BST<T>::print() {
-  traversalPrint(root);
+  //traversalPrint(root);
+  bfsPrint(root);
+}
+
+template <typename T>
+void BST<T>::bfsPrint(Node<T> *n) {
+    int items_on_curr_level = 1;
+    int items_on_next_level = 0;
+    std::queue<Node<T> *> q;
+    q.push(n);
+
+    while (!q.empty()) {
+        if (items_on_curr_level == 0) {
+            std::cout << "\n";
+            items_on_curr_level = items_on_next_level;
+            items_on_next_level = 0;
+        }
+        
+        if (q.front()->getLeftChild() != 0) {
+            q.push(q.front()->getLeftChild());
+            items_on_next_level++;
+        }
+        if (q.front()->getRightChild() != 0) {
+            q.push(q.front()->getRightChild());
+            items_on_next_level++;
+        }
+
+        std::cout << " " << q.front()->getValue();
+        q.pop();
+        items_on_curr_level--;
+    }
+
+    std::cout << std::endl;
 }
 
 template <typename T>
